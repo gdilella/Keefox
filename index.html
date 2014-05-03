@@ -8,8 +8,10 @@
     <link rel="stylesheet" type="text/css" href="css/headers.css">
     <link rel="stylesheet" type="text/css" href="css/buttons.css">
     <link rel="stylesheet" type="text/css" href="css/toolbars.css">
+	<link rel="stylesheet" type="text/css" href="css/input_areas.css">
     <title>PasswordKeeper</title>
     <script type="application/javascript" src="js/l10n.js"></script>
+	<script type="application/javascript" src="js/jquery.js"></script>
     <base target="_blank">
 </head>
 
@@ -17,9 +19,9 @@
 
     <section role="region">
         <header>
-            <!-- Icon that will indicate whether you are online or offline - enabled if you are using offline/appcache (see above) -->
+            <!-- Il Pulsante per aggiungere le password -->
             <menu type="toolbar">
-                <button id="addpassword"><span class="icon icon-add">add</span></button>
+                <button id="btnAddPsw"><span class="icon icon-add">add</span></button>
             </menu>
             <h1 data-l10n-id="app-heading">
                 PasswordKeeper
@@ -29,6 +31,11 @@
 
 
     <div id="main">
+	<h2>Password Keeper is an application that you can use for storing your passwords, keep in mind to protect your phone, if a stranger can have access to it, he can read your passwords
+Tap on the "Add" button on the header to begin to add your data</h2>
+
+		<button id="btnAddFile"><span>Create File</span></button>
+	
     </div>
 
     <footer>
