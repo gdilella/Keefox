@@ -1,0 +1,435 @@
+/*
+ *  The code is being shared between system/emergency-call/js/keypad.js
+ *  and dialer/js/keypad.js. Be sure to update both file when you commit!
+ *
+ */
+
+.reset-button {
+  border: 0;
+  background: none;
+}
+
+.reset-button::-moz-focus-inner {
+  border: 0;
+  outline: none;
+}
+
+#fake-phone-number-view {
+  font-size: 3rem;
+  position: absolute;
+  left: 0;
+  line-height: 0;
+  visibility: hidden;
+}
+
+#phone-number-view-container {
+  width: 100%;
+  height: 28%;
+  background: #00ADAD;
+  text-align: center;
+  display: flex;
+  font-weight: 300;
+  overflow: hidden;
+}
+
+#phone-number-view-container .phone-number-view-wrapper-input {
+  margin-bottom: 4.5rem;
+  display: flex;
+  align-items: center;
+  padding-left: 2rem;
+}
+
+#phone-number-view-container.keypad-visible {
+  height: -moz-calc(100% - 34.5rem);
+  visibility: hidden;
+}
+
+#phone-number-view {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  cursor: none;
+  -moz-user-select: none;
+  padding: 0;
+}
+
+#keypad-delete {
+  width: 10rem;
+  margin-bottom: 4.5rem;
+  padding: 0;
+  visibility: hidden;
+  text-align: right;
+}
+
+#keypad-delete::before {
+  content: "";
+  background: url('keypad/images/keypad/actionicon_dialer_delete.png') no-repeat;
+  width: 3rem;
+  height: 2rem;
+  display: inline-block;
+  margin-right: 2.5rem;
+  background-size: 100%;
+}
+
+#keypad-delete:active {
+  opacity: 0.6;
+}
+
+#keyboard-container {
+  height: 72%;
+  background-color: white;
+  margin: 0 1rem;
+}
+
+#keypad {
+  background: #fff;
+  width: 100%;
+  height: 80%;
+  display: table;
+  table-layout: fixed;
+}
+
+.keypad-row {
+  display: table-row;
+}
+
+.keypad-key {
+  display: table-cell;
+  padding: 1.3rem 0 0 2rem;
+  -moz-box-sizing: border-box;
+  height: 20%;
+  vertical-align: middle;
+  color: #333;
+  font-weight: 300;
+  font-size: 5rem;
+  line-height: 1rem;
+  overflow: hidden;
+}
+
+.keypad-key span {
+  width: 2rem;
+  display: inline-block;
+}
+
+.keypad-key em {
+  display: inline-block;
+  font-weight: 300;
+  font-size: 1.5rem;
+  color: #038282;
+  font-style: normal;
+  width: 4.5rem;
+}
+
+.keypad-key:active {
+  background: #94eee9;
+  color: #fff;
+}
+
+.keypad-key * {
+  pointer-events: none;
+}
+
+#keypad-delete * {
+  pointer-events: none;
+}
+
+.keypad-key .font-size-plus {
+  font-size: 2rem;
+}
+
+.keypad-subicon {
+  background-repeat: no-repeat;
+  background-position: center bottom;
+
+  -moz-user-select: none;
+  pointer-events: none;
+
+  display: inline-block;
+  width: 3rem;
+  height: 2rem;
+}
+
+.voicemail {
+  background-image: url('keypad/images/keypad/actionicon_dialer_voicemail.png');
+  background-size: 3rem;
+  background-position: -0.4rem -0.1rem;
+}
+
+.asterisk {
+  width: 4rem;
+  margin-top: 1rem;
+  margin-left: 0.2rem;
+}
+
+.sharp {
+  font-size: 4.5rem;
+  width: 4rem;
+  line-height: 0;
+  margin-top: -0.5rem;
+  margin-left: 0.2rem;
+}
+
+#keypad-callbar {
+  background: #fff;
+  height: 20%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  border-bottom: 0;
+  border-left: 0;
+  -moz-box-sizing: border-box;
+}
+
+.keypad-callbar-button {
+  position: relative;
+  width: 9rem;
+  background: #e7e7e7;
+  background-size: auto 100%;
+  border-radius: 2rem;
+  overflow: hidden;
+  height: 4rem;
+  text-align: center;
+}
+
+.keypad-callbar-button.cancel {
+  background: #575757;
+  line-height: 4rem;
+  font-size: 1.8rem;
+  font-style: italic; 
+}
+
+.keypad-callbar-button.cancel:active {
+  background: #9ef2e7;
+}
+
+#keypad-callbar-call-action {
+  display: flex;
+  position: relative;
+  flex-grow: 1;
+  align-items: center;
+  flex-direction: row-reverse;
+  background-image: url("keypad/images/keypad/actionicon_activecall_pickup.png");
+  background-color: #00ADAD;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 4rem 4rem;
+  border-radius: 2rem;
+  margin-left: 1rem;
+  height: 4rem;
+}
+
+#keypad-callbar-call-action:active {
+  background-color: #94eee9;
+}
+
+.icon-add-contact::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-image: url("keypad/images/keypad/actionicon_activecall_addcontact_40x80.png");
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size: 4rem 8rem;
+}
+
+.icon-add-contact:disabled::before {
+  opacity: 0.4;
+}
+
+.icon-add-contact:active::before {
+  background-position: center -4rem;
+}
+
+.js-sim-indication {
+  display: none;
+  font-size: 1.3rem;
+  text-align: right;
+  margin-right: 0.6rem;
+  color: #fff;
+}
+
+.has-preferred-sim .js-sim-indication {
+  display: initial;
+}
+
+.has-preferred-sim #keypad-callbar-call-action:after {
+  content: "";
+  position: absolute;
+  width: 1.4rem;
+  height: 1rem;
+  bottom: 0;
+  right: 1.7rem;
+  background-image: url("/shared/style/sim_picker/images/long-tap-indicator.png");
+  background-repeat: no-repeat;
+  background-size: 1.4rem 1rem;
+}
+
+#keypad-hidebar {
+  background: rgba(24,24,24,.92);
+  border: solid 0.1rem rgba(255, 255, 255, 0.2);
+  border-right-color: rgba(0, 0, 0, 0.4);
+  border-bottom-color: rgba(0, 0, 0, 0.4);
+  border-left: 0;
+  -moz-box-sizing: border-box;
+}
+
+#keypad-hidebar-hang-up-action-wrapper {
+  float: left;
+  height: 6.5rem;
+  width: 50%;
+}
+
+#keypad-hidebar-hide-keypad-action-wrapper {
+  height: 6.5rem;
+  width: 50%;
+}
+
+.keypad-hidebar-button {
+  height: 4rem;
+  border: 0;
+  border-radius:.2rem;
+  display: block;
+}
+
+#keypad-hidebar-hang-up-action {
+  background: url('keypad/images/btn_hang_up.png') repeat-x;
+  background-size: auto 100%;
+  opacity: 1.0;
+  margin: 1rem .5rem 1.5rem 1.5rem;
+}
+
+#keypad-hidebar-hang-up-action:active {
+  background: #820000;
+}
+
+#keypad-hidebar-hang-up-action > div {
+  margin: 0 auto;
+  background-image: url('keypad/images/ActionIcon_40x40_hangup.png');
+  background-repeat: no-repeat;
+  background-size: 4rem 4rem;
+  background-position: center;
+  width: 4rem;
+  height: 4rem;
+}
+
+#keypad-hidebar-hide-keypad-action {
+  background: url('keypad/images/btn_generic.png') repeat-x;
+  background-size: auto 100%;
+  opacity: 1.0;
+  margin: 1rem 1.5rem 1.5rem .5rem;
+}
+
+#keypad-hidebar-hide-keypad-action:active {
+  background: #333333;
+}
+
+#keypad-hidebar-hide-keypad-action > div {
+  margin: -moz-calc((4rem - 3rem)/2) auto;
+  background-image: url('keypad/images/ActionIcons_40x40_dismiss_keyboard.png');
+  background-repeat: no-repeat;
+  background-size: 4rem 4rem;
+  background-position: center;
+  width: 3rem;
+  height: 3rem;
+}
+
+.phone-number-font {
+  font-size: 3rem;
+  color: #fff;
+}
+
+/* Suggestion bar */
+#suggestion-bar {
+  margin-top: -4.5rem;
+  padding: 0;
+  width: 100%;
+  font-size: 1.7rem;
+  height: 4.5rem;
+  overflow: hidden;
+  -moz-box-sizing: border-box;
+  position: absolute;
+  color: #033B37;
+}
+
+#suggestion-count {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 5.5rem;
+  text-align: center;
+  line-height: 3.7rem;
+  margin-bottom: 0.2rem;
+  margin-top: 0.2rem;
+  font-weight: 400;
+  border-left: 1px solid rgba(255,255,255,0.2);
+}
+
+#suggestion-count.more {
+  background: url('keypad/images/icon_arrow_white.png') no-repeat scroll right 0.5rem bottom 0.3rem / 1rem auto transparent;
+}
+
+#suggestion-bar > .suggestion-item {
+  height: 3.7rem;
+  margin-right: 5.3rem;
+  padding: 0.2rem 1rem 0.2rem 2rem;
+  white-space: nowrap;
+}
+
+#suggestion-bar > .suggestion-item:active,
+#suggestion-count:active {
+  background-color: #94eee9;
+  transition: background-color 0.2s ease;
+}
+
+/* Matched item inside suggestion bar and suggestion overlay */
+.suggestion-item .name {
+  display: block;
+  line-height: 1.9rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: normal;
+}
+
+.suggestion-item .tel-type:not(:empty):after {
+  content: '|';
+  padding: 0 0 0 0.6rem;
+}
+
+.suggestion-item .tel {
+  overflow: hidden;
+}
+
+.suggestion-item .tel > span {
+  background-color: #94eee9;
+}
+
+.suggestion-item > div {
+  line-height: 1.7rem;
+  pointer-events: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.suggestion-item .avatar {
+  float: right;
+  width: 4.5rem;
+  height: 4.5rem;
+  background-size: cover;
+  opacity: 1;
+  transition: opacity 0.3s linear;
+}
+
+.suggestion-item .avatar.hidden {
+  opacity: 0;
+}
+
+.full-height {
+  height: 100%;
+}

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>PasswordKeeper</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no" />
+  <!-- Building blocks -->
+  <!-- link rel="stylesheet" href="style/action_menu.css" -->
+  <link rel="stylesheet" href="style/buttons.css">
+  <!-- link rel="stylesheet" href="style/confirm.css" -->
+  <!-- link rel="stylesheet" href="style/edit_mode.css" -->
+  <link rel="stylesheet" href="style/headers.css">
+  <!-- link rel="stylesheet" href="style/input_areas.css" -->
+  <!-- link rel="stylesheet" href="style/status.css" -->
+  <!-- link rel="stylesheet" href="style/switches.css" -->
+  <!-- link rel="stylesheet" href="style/drawer.css" -->
+  <link rel="stylesheet" href="style/lists.css">
+  <!-- link rel="stylesheet" href="style/progress_activity.css" -->
+  <!-- link rel="stylesheet" href="style/scrolling.css" -->
+  <!-- link rel="stylesheet" href="style/seekbars.css" -->
+  <!-- link rel="stylesheet" href="style/tabs.css" -->
+  <!-- link rel="stylesheet" href="style/toolbars.css" -->
+
+  <!-- Icons -->
+  <!-- link rel="stylesheet" href="icons/styles/action_icons.css" -->
+  <!-- link rel="stylesheet" href="icons/styles/media_icons.css" -->
+  <!-- link rel="stylesheet" href="icons/styles/comms_icons.css" -->
+  <!-- link rel="stylesheet" href="icons/styles/settings_icons.css" -->
+
+  <!-- Transitions -->
+  <link rel="stylesheet" href="transitions.css">
+
+  <!-- Util CSS: some extra tricks -->
+  <link rel="stylesheet" href="util.css">
+	<style>
+		body {
+			 padding: 0 0;
+			 margin: 0 0;
+		}
+		img {
+			 vertical-align: middle;
+		}
+    #index {
+      height: 100%;
+    }
+    [data-position="right"] {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      transform: translateX(100%);
+      -webkit-transform: translateX(100%);
+      z-index: 15;
+      z-index: 100; /* -> drawer */
+    }
+    section[role="region"][data-position="right"] {
+      position: absolute;
+    }
+    [data-position="right"].current {
+      animation: rightToCurrent 0.4s forwards;
+      -webkit-animation: rightToCurrent 0.4s forwards;
+    }
+    [data-position="right"].right {
+      animation: currentToRight 0.4s forwards;
+      -webkit-animation: currentToRight 0.4s forwards;
+    }
+    [data-position="current"].left {
+      animation: currentToLeft 0.4s forwards;
+      -webkit-animation: currentToLeft 0.4s forwards;
+    }
+    [data-position="current"].current {
+      animation: leftToCurrent 0.4s forwards;
+      -webkit-animation: leftToCurrent 0.4s forwards;
+    }
+    [data-position="back"] {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: -1;
+      opacity: 0;
+      /* z-index: 100; -> drawer */
+    }
+    [data-position="back"].fade-in {
+      z-index: 120;
+      animation: fadeIn 0.2s forwards;
+      -webkit-animation: fadeIn 0.2s forwards;
+    }
+    [data-position="back"].fade-out {
+      animation: fadeOut 0.2s forwards;
+      -webkit-animation: fadeOut 0.2s forwards;
+    }
+
+    /* Active state */
+    .active {
+      background-color: #b2f2ff;
+      color: #fff;
+			
+    }
+		
+		#gifts_list li {
+			margin: 5px 0;
+		}
+    }
+
+  </style>
+</head>
+<body>
+
+	  <section id="index" role="region" data-position="current">
+      <header class="fixed">
+        <h1>PasswordKeeper</h1>
+      </header>
+      <article class="scrollable header">
+        <div data-type="list">
+          <ul>
+            <li>
+              <a id="btn-open-file" href="#">
+                <p>Open kdbx file</p>
+              </a>
+            </li>
+            <li>
+              <a id="btn-help" href="#">
+                <p>Help</p>
+              </a>
+            </li>
+            <li>
+              <a id="btn-about" href="#">
+                <p>About</p>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </article>
+    </section>
+  </section>
+  
+	<section role="region" id="select-file" data-position="right">
+		<header class="fixed">
+			<a id="btn-select-file-back" href="#"><span class="icon icon-back">back</span></a>
+			<h1>Select kdbx file</h1>
+		</header>
+		<article class="scrollable header">
+        <div data-type="list">
+          <ul id="kdbx-files">
+          </ul>
+        </div>
+      </article>
+	</section>
+
+	<section role="region" id="help" data-position="right">
+		<header class="fixed">
+			<a id="btn-help-back" href="#"><span class="icon icon-back">back</span></a>
+			<h1>Help</h1>
+		</header>
+		<article class="content scrollable header">
+		</article>
+	</section>
+	
+	<section role="region" id="about" data-position="right">
+		<header class="fixed">
+			<a id="btn-about-back" href="#"><span class="icon icon-back">back</span></a>
+			<h1>About</h1>
+		</header>
+		<article class="content scrollable header">
+			<p>
+			</p>
+		</article>
+	</section>
+
+	<script type="text/javascript" src="app.js"></script>
+</body>
+</html>
