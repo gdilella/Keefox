@@ -1,15 +1,53 @@
 var sdcard = navigator.getDeviceStorage('sdcard');
+var fileName = null;
 
-var kdbxSelected = function (e) {
+var displayEntries = function(entries) {
+	var title = document.querySelector('#file-entries-title');
+	if (title.firstChild) {
+		title.removeChild(title.firstChild);
+	}
+	title.appendChild(document.createTextNode(fileName));
+	var list = document.querySelector('#file-entries-list');
+	while (list.firstChild) {
+		list.removeChild(list.firstChild);
+	}
+	for (var i in entries) {
+		var entry = entries[i];
+		var headerText = entry["Title"] + " -- " + entry["URL"];
+		headerText = document.createTextNode(headerText);
+		var header = document.createElement("div");
+		header.appendChild(headerText);
+		list.appendChild(header);
+		
+		var ul = document.createElement('ul');
+		list.appendChild(ul);
+		
+		for (var key in entry) {
+			var li = document.createElement("li");
+			ul.appendChild(li);
+			
+			var p = document.createElement("p");
+			li.appendChild(p);
+			p.appendChild(document.createTextNode(entry[key]));
+			
+			p = document.createElement("p");
+			li.appendChild(p);
+			p.appendChild(document.createTextNode(key));
+		}
+	}
+}
+
+var passwordEntered = function() {
 	var reader = new FileReader();
 	reader.onload = function(e) {
 		var data = e.target.result;
 		console.log(data);
-		data = new jDataView(data, 0, data.length, true)
-		var passes = [readPassword('password')]
+		data = new jDataView(data, 0, data.length, true);
+		password = document.querySelector('#password').value;
+		var passes = [readPassword(password)];
 		try {
 			var entries = readKeePassFile(data, passes);
-			console.log(entries);
+			displayEntries(entries);
 		} catch (e) {
 			console.log(e);
 		}
@@ -18,17 +56,21 @@ var kdbxSelected = function (e) {
 		bp_alert("Cannot load local file " + file.name);
 	};
 	
-	var request = sdcard.get(e.target.parentElement.dataset.name);
+	var request = sdcard.get(fileName);
 	
 	request.onsuccess = function () {
-		var name = this.result.name;
 		reader.readAsArrayBuffer(this.result);
 	}
 	
 	request.onerror = function () {
 		console.warn('Unable to get the file: ' + this.error);
 	}
-	
+}
+
+var kdbxSelected = function (e) {
+	fileName = e.target.parentElement.dataset.name;
+	document.querySelector('#enter-password').className = 'current';
+	document.querySelector('#select-file').className = 'currentToLeft';
 }
 
 var files = sdcard.enumerate();
@@ -71,6 +113,23 @@ document.querySelector('#btn-open-file').addEventListener ('click', function () 
 document.querySelector('#btn-select-file-back').addEventListener ('click', function () {
 	document.querySelector('#select-file').className = 'right';
 	document.querySelector('[data-position="current"]').className = 'current';
+});
+
+//enter password
+document.querySelector('#btn-password-done').addEventListener ('click', function () {
+	passwordEntered();
+	document.querySelector('#enter-password').className = 'currentToLeft';
+	document.querySelector('#file-entries').className = 'current';
+});
+document.querySelector('#btn-password-close').addEventListener ('click', function () {
+	document.querySelector('#enter-password').className = 'right';
+	document.querySelector('#select-file').className = 'leftToCurrent';
+});
+
+//file entries
+document.querySelector('#btn-file-entries-back').addEventListener ('click', function () {
+	document.querySelector('#select-file').className = 'leftToCurrent';
+	document.querySelector('#file-entries').className = 'right';
 });
 
 //help

@@ -74,6 +74,16 @@
 			-webkit-animation: currentToRight 0.4s forwards;
 		}
 		
+		[data-position="right"].leftToCurrent {
+			animation: leftToCurrent 0.4s forwards;
+			-webkit-animation: leftToCurrent 0.4s forwards;
+		}
+		
+		[data-position="right"].currentToLeft {
+			animation: currentToLeft 0.4s forwards;
+			-webkit-animation: currentToLeft 0.4s forwards;
+		}
+		
 		[data-position="current"].left {
 			animation: currentToLeft 0.4s forwards;
 			-webkit-animation: currentToLeft 0.4s forwards;
@@ -148,11 +158,42 @@
 			<h1>Select kdbx file</h1>
 		</header>
 		<article class="scrollable header">
-        <div data-type="list">
-          <ul id="kdbx-files">
-          </ul>
-        </div>
-      </article>
+			<div data-type="list">
+				<ul id="kdbx-files">
+				</ul>
+			</div>
+		</article>
+	</section>
+
+	<section role="region" id="enter-password" data-position="right">
+		<header class="fixed">
+		<button id="btn-password-close"><span class="icon icon-close">close</span></button>
+		<menu type="toolbar">
+			<button id="btn-password-done">done</button>
+		</menu>
+		<h1>Enter password</h1>
+		</header>
+		<article class="content scrollable header">
+		<header><h2>Enter your password:</h2></header>
+		<form>
+			<p>
+			<input type="password" id="password" required>
+			</p>
+		</form>
+		</article>
+	</section>
+	
+	<section role="region" id="file-entries" data-position="right">
+		<header class="fixed">
+			<a id="btn-file-entries-back" href="#"><span class="icon icon-back">back</span></a>
+			<h1 id="file-entries-title"></h1>
+		</header>
+		<article class="scrollable header">
+			<div data-type="list">
+				<ul id="file-entries-list">
+				</ul>
+			</div>
+		</article>
 	</section>
 
 	<section role="region" id="help" data-position="right">
