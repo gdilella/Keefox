@@ -1,8 +1,37 @@
+var sdcard = navigator.getDeviceStorage('sdcard');
+
 var kdbxSelected = function (e) {
-	console.log(e.target.parentElement.dataset.name);
+	var reader = new FileReader();
+	reader.onload = function(e) {
+		var data = e.target.result;
+		console.log(data);
+		data = new jDataView(data, 0, data.length, true)
+		var passes = [readPassword('password')]
+		try {
+			var entries = readKeePassFile(data, passes);
+			console.log(entries);
+		} catch (e) {
+			console.log(e);
+		}
+	};
+	reader.onerror = function(e) {
+		bp_alert("Cannot load local file " + file.name);
+	};
+	
+	var request = sdcard.get(e.target.parentElement.dataset.name);
+	
+	request.onsuccess = function () {
+		var name = this.result.name;
+		reader.readAsArrayBuffer(this.result);
+	}
+	
+	request.onerror = function () {
+		console.warn('Unable to get the file: ' + this.error);
+	}
+	
 }
 
-var files = navigator.getDeviceStorage('sdcard').enumerate();
+var files = sdcard.enumerate();
 
 // Loop through the kdbx files and create a list entry for each.
 files.onsuccess = function(e) {
@@ -11,7 +40,6 @@ files.onsuccess = function(e) {
 		var li = document.createElement('li');
 		var a = document.createElement('a');
 		a.href = '#';
-		a.dataset.blob = URL.createObjectURL(file); // Store file blob in a data attribute
 		a.dataset.name = file.name.replace(/^.*[\\\/]/, '');
 		var p = document.createElement('p');
 		p.appendChild(document.createTextNode(a.dataset.name));

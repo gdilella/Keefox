@@ -14,7 +14,7 @@
   "permissions": {
     "device-storage:sdcard": {
       "access": "readonly",
-      "description": "Required for get a list of audio files on the sdcard"
+      "description": "Required for read kdbx files from the sdcard"
     }
   }
 }
