@@ -2,12 +2,19 @@
   "name": "PasswordKeeper",
   "description": "A read-only, web-enabled version of KeePass",
   "version": "0.1",
-  "launch_path": "/browsepass.html",
+  "launch_path": "/index.html",
   "developer": {
     "name": "Gianmarco Di Lella",
     "url": "http://github.com/giammyjet/"
   },
   "icons": {
     "128": "icon-128.png"
+  },
+  "type": "privileged",
+  "permissions": {
+    "device-storage:sdcard": {
+      "access": "readonly",
+      "description": "Required for read kdbx files from the sdcard"
+    }
   }
 }
