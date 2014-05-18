@@ -41,9 +41,8 @@ var passwordEntered = function() {
 	var reader = new FileReader();
 	reader.onload = function(e) {
 		var data = e.target.result;
-		console.log(data);
 		data = new jDataView(data, 0, data.length, true);
-		password = document.querySelector('#password').value;
+		var password = document.querySelector('#password').value;
 		var passes = [readPassword(password)];
 		try {
 			var entries = readKeePassFile(data, passes);
@@ -69,6 +68,7 @@ var passwordEntered = function() {
 
 var kdbxSelected = function (e) {
 	fileName = e.target.parentElement.dataset.name;
+	document.querySelector('#password').value = '';
 	document.querySelector('#enter-password').className = 'current';
 	document.querySelector('#select-file').className = 'currentToLeft';
 }
