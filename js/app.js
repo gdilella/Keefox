@@ -38,6 +38,7 @@ var displayEntries = function(entries) {
 }
 
 var passwordEntered = function() {
+	document.querySelector('#spinner').hidden = false;
 	var reader = new FileReader();
 	reader.onload = function(e) {
 		var data = e.target.result;
@@ -68,6 +69,7 @@ var passwordEntered = function() {
 
 var kdbxSelected = function (e) {
 	fileName = e.target.parentElement.dataset.name;
+	document.querySelector('#spinner').hidden = true;
 	document.querySelector('#password').value = '';
 	document.querySelector('#enter-password').className = 'current';
 	document.querySelector('#select-file').className = 'currentToLeft';
