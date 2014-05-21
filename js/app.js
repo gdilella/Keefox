@@ -12,16 +12,18 @@ var displayDetails = function(details) {
 		list.removeChild(list.firstChild);
 	}
 	for (var key in details) {
-		var li = document.createElement("li");
-		list.appendChild(li);
-		
-		var p = document.createElement("p");
-		li.appendChild(p);
-		p.appendChild(document.createTextNode(details[key]));
-		
-		p = document.createElement("p");
-		li.appendChild(p);
-		p.appendChild(document.createTextNode(key));
+		if (details[key] != '') {
+			var li = document.createElement("li");
+			list.appendChild(li);
+			
+			var p = document.createElement("p");
+			li.appendChild(p);
+			p.appendChild(document.createTextNode(details[key]));
+			
+			p = document.createElement("p");
+			li.appendChild(p);
+			p.appendChild(document.createTextNode(key));
+		}
 	}
 }
 
