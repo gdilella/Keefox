@@ -18,11 +18,11 @@ var displayDetails = function(details) {
 			
 			var p = document.createElement("p");
 			li.appendChild(p);
-			p.appendChild(document.createTextNode(details[key]));
+			p.appendChild(document.createTextNode(key));
 			
 			p = document.createElement("p");
 			li.appendChild(p);
-			p.appendChild(document.createTextNode(key));
+			p.appendChild(document.createTextNode(details[key]));
 		}
 	}
 }
