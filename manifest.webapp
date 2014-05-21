@@ -1,7 +1,7 @@
 {
-  "name": "PasswordKeeper",
+  "name": "Keefox",
   "description": "A read-only, web-enabled version of KeePass",
-  "version": "0.1",
+  "version": "0.5",
   "launch_path": "/index.html",
   "developer": {
     "name": "Gianmarco Di Lella",
