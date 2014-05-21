@@ -6,7 +6,7 @@ var displayDetails = function(details) {
 	if (title.firstChild) {
 		title.removeChild(title.firstChild);
 	}
-	title.appendChild(document.createTextNode(details["Title"] + " -- " + details["URL"]));
+	title.appendChild(document.createTextNode(details["Title"]));
 	var list = document.querySelector('#details-list');
 	while (list.firstChild) {
 		list.removeChild(list.firstChild);
@@ -39,7 +39,7 @@ var displayEntriesTitles = function(entries) {
 	}
 	for (var i in entries) {
 		var entry = entries[i];
-		var headerText = entry["Title"] + " -- " + entry["URL"];
+		var headerText = entry["Title"];
 		headerText = document.createTextNode(headerText);
 		var p = document.createElement('p');
 		p.appendChild(headerText);
