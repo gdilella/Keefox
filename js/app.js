@@ -54,8 +54,9 @@ var displayEntriesTitles = function(entries) {
 			document.querySelector('#file-entries').className = 'currentToLeft';
 			document.querySelector('#details').className = 'current';
 		}})(entry));
-		
 	}
+	document.querySelector('#enter-password').className = 'currentToLeft';
+	document.querySelector('#file-entries').className = 'current';
 }
 
 var passwordEntered = function() {
@@ -141,8 +142,6 @@ document.querySelector('#btn-select-file-back').addEventListener ('click', funct
 //enter password
 document.querySelector('#btn-password-done').addEventListener ('click', function () {
 	passwordEntered();
-	document.querySelector('#enter-password').className = 'currentToLeft';
-	document.querySelector('#file-entries').className = 'current';
 });
 document.querySelector('#btn-password-close').addEventListener ('click', function () {
 	document.querySelector('#enter-password').className = 'right';
