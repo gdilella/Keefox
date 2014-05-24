@@ -8,7 +8,9 @@
     "url": "http://github.com/giammyjet/"
   },
   "icons": {
-    "128": "icon-128.png"
+    "128": "icon-128.png",
+	"60" : "icon-60.png",
+	"30" : "icon-30.png"
   },
   "type": "privileged",
   "permissions": {

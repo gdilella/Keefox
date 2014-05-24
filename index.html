@@ -159,7 +159,7 @@
 	<section role="region" id="select-file" data-position="right">
 		<header class="fixed">
 			<a id="btn-select-file-back" href="#"><span class="icon icon-back">back</span></a>
-			<h1 data-l10n-id="select-kdbx-file"></h1>
+			<h1 data-l10n-id="open-kdbx-file"></h1>
 		</header>
 		<article class="scrollable header">
 			<div data-type="list">
@@ -171,22 +171,20 @@
 
 	<section role="region" id="enter-password" data-position="right">
 		<header class="fixed">
-		<button id="btn-password-close"><span class="icon icon-close">close</span></button>
+		<button id="btn-password-close"><span class="icon icon-close" data-l10n-id="close"></span></button>
 		<menu type="toolbar">
-			<button id="btn-password-done">done</button>
+			<button id="btn-password-done" data-l10n-id="done"></button>
 		</menu>
-		<h1>Enter password</h1>
+		<h1 data-l10n-id="enter-password"></h1>
 		</header>
 		<article class="content scrollable header">
-		<header><h2>Enter your password:</h2></header>
+		<header><h2 data-l10n-id="enter-your-password"></h2></header>
 		<form>
 			<p>
 			<input type="password" id="password" required>
 			</p>
 		</form>
-		<p class ="center">
-			No data are saved by the app
-		</p>
+		<p class ="center" data-l10n-id="disclaimer"></p>
 		<div class="center" id="spinner">
 			<progress></progress>
 		</div>
@@ -195,7 +193,7 @@
 	
 	<section role="region" id="file-entries" data-position="right">
 		<header class="fixed">
-			<a id="btn-file-entries-back" href="#"><span class="icon icon-back">back</span></a>
+			<a id="btn-file-entries-back" href="#"><span class="icon icon-back" data-l10n-id="back"></span></a>
 			<h1 id="file-entries-title"></h1>
 		</header>
 		<article class="scrollable header">
@@ -208,7 +206,7 @@
 	
 	<section role="region" id="details" data-position="right">
 		<header class="fixed">
-			<a id="details-back" href="#"><span class="icon icon-back">back</span></a>
+			<a id="details-back" href="#"><span class="icon icon-back" data-l10n-id="back"></span></a>
 			<h1 id="details-title"></h1>
 		</header>
 		<article class="scrollable header">
@@ -221,16 +219,12 @@
 
 	<section role="region" id="help" data-position="right">
 		<header class="fixed">
-			<a id="btn-help-back" href="#"><span class="icon icon-back">back</span></a>
+			<a id="btn-help-back" href="#"><span class="icon icon-back" data-l10n-id="back"></span></a>
 			<h1 data-l10n-id="help"></h1>
 		</header>
 		<article class="content scrollable header">
-			<p>
-			KeeFox is a reader for your stored keepass 2.x databases, tap on "open" to read your passwords.
-			</p>
-			<p>
-			Read more on Keepass project : <a target='_blank' href="http://keepass.info/help/base/index.html">keepass.info</a>
-			</p>
+			<p data-l10n-id="help-text"></p>
+			<p data-l10n-id="more-info"><a target='_blank' href="http://keepass.info/help/base/index.html">keepass.info</a></p>
 		</article>
 	</section>
 	
@@ -240,20 +234,8 @@
 			<h1 data-l10n-id="about"></h1>
 		</header>
 		<article class="content scrollable header">
-			<p>
-				This app is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License (GNU GPL) 
-				as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.  
-				The code is distributed WITHOUT ANY WARRANTY;
-				without even the implied warranty of MERCHANTABILITY or FITNESS
-				FOR A PARTICULAR PURPOSE. See the <a target='_blank' 
-				href="http://www.gnu.org/licenses/gpl-3.0.html">
-				GNU GPL</a> for more details.
-			</p>
-			<p>
-				Special Thanks to <a target='_blank' 
-				href="https://github.com/marcoscarpetta">Marco Scarpetta</a> and <a target='_blank' 
-				href="https://github.com/Mte90">
-				Daniele Scasciafratte</a>
+			<p data-l10n-id="about-text"></p>
+			<p data-l10n-id="special-thanks">
 			</p>
 		</article>
 	</section>
