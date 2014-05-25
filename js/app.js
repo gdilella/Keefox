@@ -16,13 +16,24 @@ var displayDetails = function(details) {
 			var li = document.createElement("li");
 			list.appendChild(li);
 			
-			var p = document.createElement("p");
-			li.appendChild(p);
-			p.appendChild(document.createTextNode(key));
+			var pKey = document.createElement("p");
+			pKey.appendChild(document.createTextNode(key));
 			
-			p = document.createElement("p");
-			li.appendChild(p);
-			p.appendChild(document.createTextNode(details[key]));
+			var pValue = document.createElement("p");
+			pValue.appendChild(document.createTextNode(details[key]));
+			
+			if (key == "URL") {
+				var a = document.createElement('a');
+				a.href = details[key];
+				a.target = "_black";
+				a.appendChild(pKey);
+				a.appendChild(pValue);
+				li.appendChild(a);
+			}
+			else {
+				li.appendChild(pKey);
+				li.appendChild(pValue);
+			}
 		}
 	}
 }
