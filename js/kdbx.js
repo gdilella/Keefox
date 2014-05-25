@@ -100,6 +100,56 @@ function decodeUtf8(value) {
   return decodeURIComponent(escape(value));
 }
 
+//Node class
+function Node(xml, parentNode, salsa) {
+	this.parentNode = parentNode;
+	this.type = xml.nodeName;
+	this.children = this.getChildren(xml, salsa);
+	
+	if (this.type === "Group") {
+		this.name = evaluateXPath(xml, "Name")[0].textContent;
+	}
+	else if (this.type === "Entry") {
+		var keys = evaluateXPath(xml, "String/Key");
+		var values = evaluateXPath(xml, "String/Value");
+		assert(keys.length == values.length, "different key and value sizes");
+		this.properties = {};
+		for (var j in keys) {
+			var value = values[j].textContent;
+			if (values[j].getAttribute("Protected") == "True") {
+				value = atob(value);
+				var xorbuf = salsa.getBytes(value.length);
+				//alert("xorbuf: " + xorbuf);
+				var r = new Array();
+				for (var k = 0; k < value.length; ++k) {
+					r[k] = String.fromCharCode(value.charCodeAt(k) ^ xorbuf[k]);
+				}
+				value = r.join("");
+				value = decodeUtf8(value);
+			}
+			this.properties[keys[j].textContent] = value;
+		}
+	}
+}
+
+Node.prototype.getChildren = function(xml, salsa) {
+	var children = new Array();
+	if (this.type === "Group") {
+		var groups = evaluateXPath(xml, "Group");
+		for (var i in groups) {
+			var group = new Node(groups[i], this, salsa);
+			children.push(group);
+		}
+		var entries = evaluateXPath(xml, "Entry");
+		for (var i in entries) {
+			var entry = new Node(entries[i], this, salsa);
+			children.push(entry);
+		}
+	}
+	return children;
+	
+}
+
 function readKeePassFile(dataView, filePasswords) {
 	var sig1 = dataView.getUint32();
 	var sig2 = dataView.getUint32();
@@ -219,8 +269,7 @@ function readKeePassFile(dataView, filePasswords) {
   assert(xmlData.indexOf("<?xml") == 0, "XML data is not valid");
   //alert(xmlData);
   var xml = (new DOMParser()).parseFromString(xmlData, "text/xml");
-  var keepassEntries = new Array();
-  var entries = evaluateXPath(xml, "//Entry");
+  var mainGroup = evaluateXPath(xml, "KeePassFile/Root/Group")[0];
 
   var hashedProtectedStreamKey = CryptoJS.SHA256(
     CryptoJS.enc.Latin1.parse(header[ProtectedStreamKey]));
@@ -236,33 +285,6 @@ function readKeePassFile(dataView, filePasswords) {
   var iv = new Uint8Array([0xE8, 0x30, 0x09, 0x4B, 0x97, 0x20, 0x5D, 0x2A]);
   var salsa = new Salsa20(salsaKey, iv);
 
-  for (var i in entries) {
-    var keys = evaluateXPath(entries[i], "String/Key");
-    var values = evaluateXPath(entries[i], "String/Value");
-    assert(keys.length == values.length, "different key and value sizes");
-    var properties = {};
-    for (var j in keys) {
-      var value = values[j].textContent;
-      if (values[j].getAttribute("Protected") == "True") {
-        value = atob(value);
-        var xorbuf = salsa.getBytes(value.length);
-        //alert("xorbuf: " + xorbuf);
-        var r = new Array();
-        for (var k = 0; k < value.length; ++k) {
-          r[k] = String.fromCharCode(value.charCodeAt(k) ^ xorbuf[k]);
-        }
-        value = r.join("");
-        value = decodeUtf8(value);
-      }
-      properties[keys[j].textContent] = value;
-    }
-    //alert("Password: " + properties["Password"]);
-    if (entries[i].parentNode.nodeName == "History") {
-      // ignore History
-      continue;
-    }
-    keepassEntries.push(properties);
-  }
-
-  return keepassEntries;
+  var tree = new Node(mainGroup, null, salsa)
+  return tree;
 }

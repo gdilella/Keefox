@@ -1,73 +1,73 @@
 var sdcard = navigator.getDeviceStorage('sdcard');
 var fileName = null;
+var currentNode = null;
 
-var displayDetails = function(details) {
+var displayTree = function(tree) {
+	currentNode = tree;
 	var title = document.querySelector('#details-title');
 	if (title.firstChild) {
 		title.removeChild(title.firstChild);
 	}
-	title.appendChild(document.createTextNode(details["Title"]));
 	var list = document.querySelector('#details-list');
 	while (list.firstChild) {
 		list.removeChild(list.firstChild);
 	}
-	for (var key in details) {
-		if (details[key] != '') {
-			var li = document.createElement("li");
-			list.appendChild(li);
-			
-			var pKey = document.createElement("p");
-			pKey.appendChild(document.createTextNode(key));
-			
-			var pValue = document.createElement("p");
-			pValue.appendChild(document.createTextNode(details[key]));
-			
-			if (key == "URL") {
-				var a = document.createElement('a');
-				a.href = details[key];
-				a.target = "_black";
-				a.appendChild(pKey);
-				a.appendChild(pValue);
-				li.appendChild(a);
+	if (tree.type == "Group") {
+		title.appendChild(document.createTextNode(tree.name));
+		for (var i in tree.children) {
+			var child = tree.children[i];
+			if (child.type == "Group") {
+				var headerText = child.name;
+			} else if (child.type == "Entry") {
+				var headerText = child.properties["Title"];
 			}
-			else {
-				li.appendChild(pKey);
-				li.appendChild(pValue);
+			headerText = document.createTextNode(headerText);
+			var p = document.createElement('p');
+			p.appendChild(headerText);
+			var li = document.createElement('li');
+			list.appendChild(li);
+			var a = document.createElement('a');
+			li.appendChild(a);
+			a.appendChild(p);
+			a.href = '#';
+			a.addEventListener ('click', (function (child) { return function (e) {
+				displayTree(child);
+			}})(child));
+		}
+	}
+	
+	else if (tree.type == "Entry") {
+		title.appendChild(document.createTextNode(tree.properties["Title"]));
+		
+		var details = tree.properties;
+		for (var key in details) {
+			if (details[key] != '') {
+				var li = document.createElement("li");
+				list.appendChild(li);
+				
+				var pKey = document.createElement("p");
+				pKey.appendChild(document.createTextNode(key));
+				
+				var pValue = document.createElement("p");
+				pValue.appendChild(document.createTextNode(details[key]));
+				
+				if (key == "URL") {
+					var a = document.createElement('a');
+					a.href = details[key];
+					a.target = "_black";
+					a.appendChild(pKey);
+					a.appendChild(pValue);
+					li.appendChild(a);
+				}
+				else {
+					li.appendChild(pKey);
+					li.appendChild(pValue);
+				}
 			}
 		}
 	}
-}
-
-var displayEntriesTitles = function(entries) {
-	var title = document.querySelector('#file-entries-title');
-	if (title.firstChild) {
-		title.removeChild(title.firstChild);
-	}
-	title.appendChild(document.createTextNode(fileName));
-	var list = document.querySelector('#file-entries-list');
-	while (list.firstChild) {
-		list.removeChild(list.firstChild);
-	}
-	for (var i in entries) {
-		var entry = entries[i];
-		var headerText = entry["Title"];
-		headerText = document.createTextNode(headerText);
-		var p = document.createElement('p');
-		p.appendChild(headerText);
-		var li = document.createElement('li');
-		list.appendChild(li);
-		var a = document.createElement('a');
-		li.appendChild(a);
-		a.appendChild(p);
-		a.href = '#';
-		a.addEventListener ('click', (function (entry) { return function (e) {
-			displayDetails(entry);
-			document.querySelector('#file-entries').className = 'currentToLeft';
-			document.querySelector('#details').className = 'current';
-		}})(entry));
-	}
 	document.querySelector('#enter-password').className = 'currentToLeft';
-	document.querySelector('#file-entries').className = 'current';
+	document.querySelector('#details').className = 'current';
 }
 
 var passwordEntered = function() {
@@ -79,8 +79,8 @@ var passwordEntered = function() {
 		var password = document.querySelector('#password').value;
 		var passes = [readPassword(password)];
 		try {
-			var entries = readKeePassFile(data, passes);
-			displayEntriesTitles(entries);
+			var tree = readKeePassFile(data, passes);
+			displayTree(tree);
 		} catch (e) {
 			console.log(e);
 		}
@@ -165,8 +165,13 @@ document.querySelector('#btn-file-entries-back').addEventListener ('click', func
 
 //details
 document.querySelector('#details-back').addEventListener ('click', function () {
-	document.querySelector('#file-entries').className = 'leftToCurrent';
-	document.querySelector('#details').className = 'right';
+	if (currentNode.parentNode != null) {
+		displayTree(currentNode.parentNode);
+	}
+	else {
+		document.querySelector('#select-file').className = 'leftToCurrent';
+		document.querySelector('#details').className = 'right';
+	}
 });
 
 //help
