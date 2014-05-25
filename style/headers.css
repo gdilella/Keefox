@@ -314,7 +314,7 @@ section[role="region"] > header:first-child a,
 section[role="region"] > header:first-child button,
 gaia-header a,
 gaia-header button {
-  color: rgba(0,0,0,0.6);
+  color: rgba(255, 255, 255, 0.9);
 }
 
 section[role="region"] > header:first-child a:active:after,
