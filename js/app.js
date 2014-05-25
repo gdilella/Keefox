@@ -151,9 +151,7 @@ document.querySelector('#btn-select-file-back').addEventListener ('click', funct
 });
 
 //enter password
-document.querySelector('#btn-password-done').addEventListener ('click', function () {
-	passwordEntered();
-});
+document.querySelector('#btn-password-done').addEventListener ('click', passwordEntered);
 document.querySelector('#btn-password-close').addEventListener ('click', function () {
 	document.querySelector('#enter-password').className = 'right';
 	document.querySelector('#select-file').className = 'leftToCurrent';
