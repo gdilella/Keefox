@@ -154,7 +154,7 @@ document.querySelector('#btn-select-file-back').addEventListener('click', functi
 
 //enter password
 document.querySelector('#btn-password-done').addEventListener('click', function() {
-  if (document.querySelector('#password').innerHTML !== '') {
+  if (document.querySelector('#password').value !== '') {
     passwordEntered();
   }
 });
