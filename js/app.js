@@ -106,6 +106,7 @@ var kdbxSelected = function(e) {
   fileName = e.target.parentElement.dataset.name;
   document.querySelector('#spinner').hidden = true;
   document.querySelector('#password').value = '';
+  document.querySelector('#password').focus();
   document.querySelector('#enter-password').className = 'current';
   document.querySelector('#select-file').className = 'currentToLeft';
 };
