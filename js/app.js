@@ -100,13 +100,14 @@ var passwordEntered = function() {
 	}
 }
 
-var kdbxSelected = function (e) {
-	fileName = e.target.parentElement.dataset.name;
-	document.querySelector('#spinner').hidden = true;
-	document.querySelector('#password').value = '';
-	document.querySelector('#enter-password').className = 'current';
-	document.querySelector('#select-file').className = 'currentToLeft';
-}
+var kdbxSelected = function(e) {
+  fileName = e.target.parentElement.dataset.name;
+  document.querySelector('#spinner').hidden = true;
+  document.querySelector('#password').value = '';
+  document.querySelector('#password').focus();
+  document.querySelector('#enter-password').className = 'current';
+  document.querySelector('#select-file').className = 'currentToLeft';
+};
 
 var files = sdcard.enumerate();
 
@@ -151,7 +152,11 @@ document.querySelector('#btn-select-file-back').addEventListener ('click', funct
 });
 
 //enter password
-document.querySelector('#btn-password-done').addEventListener ('click', passwordEntered);
+document.querySelector('#btn-password-done').addEventListener('click', function() {
+  if (document.querySelector('#password').value !== '') {
+    passwordEntered();
+  }
+});
 document.querySelector('#btn-password-close').addEventListener ('click', function () {
 	document.querySelector('#enter-password').className = 'right';
 	document.querySelector('#select-file').className = 'leftToCurrent';
