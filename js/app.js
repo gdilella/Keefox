@@ -78,12 +78,8 @@ var passwordEntered = function() {
 		data = new jDataView(data, 0, data.length, true);
 		var password = document.querySelector('#password').value;
 		var passes = [readPassword(password)];
-		try {
-			var tree = readKeePassFile(data, passes);
-			displayTree(tree);
-		} catch (e) {
-			console.log(e);
-		}
+		var tree = readKeePassFile(data, passes);
+		displayTree(tree);
 	};
 	reader.onerror = function(e) {
 		bp_alert("Cannot load local file " + file.name);
