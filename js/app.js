@@ -12,13 +12,13 @@ var displayTree = function(tree) {
 	while (list.firstChild) {
 		list.removeChild(list.firstChild);
 	}
-	if (tree.type == "Group") {
+	if (tree.type === "Group") {
 		title.appendChild(document.createTextNode(tree.name));
 		for (var i in tree.children) {
 			var child = tree.children[i];
-			if (child.type == "Group") {
+			if (child.type === "Group") {
 				var headerText = child.name;
-			} else if (child.type == "Entry") {
+			} else if (child.type === "Entry") {
 				var headerText = child.properties["Title"];
 			}
 			headerText = document.createTextNode(headerText);
@@ -32,16 +32,16 @@ var displayTree = function(tree) {
 			a.href = '#';
 			a.addEventListener ('click', (function (child) { return function (e) {
 				displayTree(child);
-			}})(child));
+			};})(child));
 		}
 	}
 	
-	else if (tree.type == "Entry") {
+	else if (tree.type === "Entry") {
 		title.appendChild(document.createTextNode(tree.properties["Title"]));
 		
 		var details = tree.properties;
 		for (var key in details) {
-			if (details[key] != '') {
+			if (details[key] !== '') {
 				var li = document.createElement("li");
 				list.appendChild(li);
 				
@@ -51,7 +51,7 @@ var displayTree = function(tree) {
 				var pValue = document.createElement("p");
 				pValue.appendChild(document.createTextNode(details[key]));
 				
-				if (key == "URL") {
+				if (key === "URL") {
 					var a = document.createElement('a');
 					a.href = details[key];
 					a.target = "_black";
@@ -68,7 +68,7 @@ var displayTree = function(tree) {
 	}
 	document.querySelector('#enter-password').className = 'currentToLeft';
 	document.querySelector('#details').className = 'current';
-}
+};
 
 var passwordEntered = function() {
 	document.querySelector('#spinner').hidden = false;
@@ -93,27 +93,28 @@ var passwordEntered = function() {
 	
 	request.onsuccess = function () {
 		reader.readAsArrayBuffer(this.result);
-	}
+	};
 	
 	request.onerror = function () {
 		console.warn('Unable to get the file: ' + this.error);
-	}
-}
+	};
+};
 
-var kdbxSelected = function (e) {
-	fileName = e.target.parentElement.dataset.name;
-	document.querySelector('#spinner').hidden = true;
-	document.querySelector('#password').value = '';
-	document.querySelector('#enter-password').className = 'current';
-	document.querySelector('#select-file').className = 'currentToLeft';
-}
+var kdbxSelected = function(e) {
+  fileName = e.target.parentElement.dataset.name;
+  document.querySelector('#spinner').hidden = true;
+  document.querySelector('#password').value = '';
+  document.querySelector('#password').focus();
+  document.querySelector('#enter-password').className = 'current';
+  document.querySelector('#select-file').className = 'currentToLeft';
+};
 
 var files = sdcard.enumerate();
 
 // Loop through the kdbx files and create a list entry for each.
 files.onsuccess = function(e) {
 	var file = this.result;
-	if (file != null && file.name.split('.').pop() === 'kdbx') {
+	if (file !== null && file.name.split('.').pop() === 'kdbx') {
 		var li = document.createElement('li');
 		var a = document.createElement('a');
 		a.href = '#';
@@ -151,7 +152,11 @@ document.querySelector('#btn-select-file-back').addEventListener ('click', funct
 });
 
 //enter password
-document.querySelector('#btn-password-done').addEventListener ('click', passwordEntered);
+document.querySelector('#btn-password-done').addEventListener('click', function() {
+  if (document.querySelector('#password').value !== '') {
+    passwordEntered();
+  }
+});
 document.querySelector('#btn-password-close').addEventListener ('click', function () {
 	document.querySelector('#enter-password').className = 'right';
 	document.querySelector('#select-file').className = 'leftToCurrent';
@@ -165,7 +170,7 @@ document.querySelector('#btn-file-entries-back').addEventListener ('click', func
 
 //details
 document.querySelector('#details-back').addEventListener ('click', function () {
-	if (currentNode.parentNode != null) {
+	if (currentNode.parentNode !== null) {
 		displayTree(currentNode.parentNode);
 	}
 	else {
