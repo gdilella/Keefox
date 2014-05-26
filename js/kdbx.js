@@ -135,16 +135,17 @@ function Node(xml, parentNode, salsa) {
 Node.prototype.getChildren = function(xml, salsa) {
 	var children = new Array();
 	if (this.type === "Group") {
-		var groups = evaluateXPath(xml, "Group");
-		for (var i in groups) {
-			var group = new Node(groups[i], this, salsa);
-			children.push(group);
-		}
 		var entries = evaluateXPath(xml, "Entry");
 		for (var i in entries) {
 			var entry = new Node(entries[i], this, salsa);
 			children.push(entry);
 		}
+		var groups = evaluateXPath(xml, "Group");
+		for (var i in groups) {
+			var group = new Node(groups[i], this, salsa);
+			children.push(group);
+		}
+
 	}
 	return children;
 	
