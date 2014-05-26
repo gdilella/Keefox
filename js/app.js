@@ -28,6 +28,13 @@ var displayTree = function(tree) {
 			list.appendChild(li);
 			var a = document.createElement('a');
 			li.appendChild(a);
+			if (child.type === "Group") {
+				var img = document.createElement('img');
+				img.src = "images/folder.png";
+				var aside = document.createElement('aside');
+				aside.appendChild(img);
+				a.appendChild(aside);
+			}
 			a.appendChild(p);
 			a.href = '#';
 			a.addEventListener ('click', (function (child) { return function (e) {

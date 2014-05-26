@@ -145,7 +145,6 @@ Node.prototype.getChildren = function(xml, salsa) {
 			var group = new Node(groups[i], this, salsa);
 			children.push(group);
 		}
-
 	}
 	return children;
 	
