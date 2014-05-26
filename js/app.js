@@ -162,12 +162,6 @@ document.querySelector('#btn-password-close').addEventListener ('click', functio
 	document.querySelector('#select-file').className = 'leftToCurrent';
 });
 
-//file entries
-document.querySelector('#btn-file-entries-back').addEventListener ('click', function () {
-	document.querySelector('#select-file').className = 'leftToCurrent';
-	document.querySelector('#file-entries').className = 'right';
-});
-
 //details
 document.querySelector('#details-back').addEventListener ('click', function () {
 	if (currentNode.parentNode !== null) {
