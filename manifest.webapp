@@ -17,7 +17,7 @@
   "type": "privileged",
   "permissions": {
     "device-storage:sdcard": {
-      "access": "readwrite",
+      "access": "readonly",
       "description": "Required for read kdbx files from the sdcard"
     }
   }
