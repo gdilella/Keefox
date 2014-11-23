@@ -1,4 +1,3 @@
-var sdcard = navigator.getDeviceStorage('sdcard');
 var fileName = null;
 var currentNode = null;
 
@@ -22,12 +21,16 @@ var displayTree = function(tree) {
 				var headerText = child.properties["Title"];
 			}
 			headerText = document.createTextNode(headerText);
+            
 			var p = document.createElement('p');
 			p.appendChild(headerText);
+            
 			var li = document.createElement('li');
 			list.appendChild(li);
+            
 			var a = document.createElement('a');
 			li.appendChild(a);
+            
 			if (child.type === "Group") {
 				var img = document.createElement('img');
 				img.src = "images/folder.png";
@@ -35,6 +38,7 @@ var displayTree = function(tree) {
 				aside.appendChild(img);
 				a.appendChild(aside);
 			}
+			
 			a.appendChild(p);
 			a.href = '#';
 			a.addEventListener ('click', (function (child) { return function (e) {
@@ -55,8 +59,20 @@ var displayTree = function(tree) {
 				var pKey = document.createElement("p");
 				pKey.appendChild(document.createTextNode(key));
 				
-				var pValue = document.createElement("p");
-				pValue.appendChild(document.createTextNode(details[key]));
+                if (key === "Password") {
+                    var formValue = document.createElement("form");
+                    var pValue = document.createElement("p");
+                    formValue.appendChild(pValue);
+                    var inputPassword = document.createElement("input");
+                    inputPassword.type="text";
+                    inputPassword.readonly="readonly";
+                    inputPassword.value=details[key];
+                    pValue.appendChild(inputPassword);
+                }
+                else {
+                    var pValue = document.createElement("p");
+                    pValue.appendChild(document.createTextNode(details[key]));
+                }
 				
 				if (key === "URL") {
 					var a = document.createElement('a');
@@ -81,17 +97,20 @@ var passwordEntered = function() {
 	document.querySelector('#spinner').hidden = false;
 	var reader = new FileReader();
 	reader.onload = function(e) {
+        console.debug("Loading file");
 		var data = e.target.result;
 		data = new jDataView(data, 0, data.length, true);
 		var password = document.querySelector('#password').value;
 		var passes = [readPassword(password)];
 		var tree = readKeePassFile(data, passes);
+        console.debug("Display tree");
 		displayTree(tree);
+        console.debug("Display tree end");
 	};
 	reader.onerror = function(e) {
 		bp_alert("Cannot load local file " + file.name);
 	};
-	
+	var sdcard = navigator.getDeviceStorage('sdcard');
 	var request = sdcard.get(fileName);
 	
 	request.onsuccess = function () {
@@ -99,7 +118,8 @@ var passwordEntered = function() {
 	};
 	
 	request.onerror = function () {
-		console.warn('Unable to get the file: ' + this.error);
+		console.warn('Unable to get the file: ');
+        console.warn(this.error);
 	};
 };
 
@@ -112,40 +132,46 @@ var kdbxSelected = function(e) {
   document.querySelector('#select-file').className = 'currentToLeft';
 };
 
-var files = sdcard.enumerate();
+var reloadFiles = function() {
+    console.debug("Loading sdcard...");
+    var sdcard = navigator.getDeviceStorage('sdcard');
+    var files = sdcard.enumerate();
 
-// Loop through the kdbx files and create a list entry for each.
-files.onsuccess = function(e) {
-	var file = this.result;
-	if (file !== null && file.name.split('.').pop() === 'kdbx') {
-		var li = document.createElement('li');
-		var a = document.createElement('a');
-		a.href = '#';
-		a.dataset.name = file.name.replace(/^.*[\\\/]/, '');
-		var p = document.createElement('p');
-		p.appendChild(document.createTextNode(a.dataset.name));
-		a.appendChild(p);
-		li.appendChild(a);
+    // Loop through the kdbx files and create a list entry for each.
+    files.onsuccess = function(e) {
+        var file = this.result;
+        if (file) {
+            if (file.name.split('.').pop() === 'kdbx') {
+                var li = document.createElement('li');
+                var a = document.createElement('a');
+                a.href = '#';
+                a.dataset.name = file.name.replace(/^.*[\\\/]/, '');
+                var p = document.createElement('p');
+                p.appendChild(document.createTextNode(a.dataset.name));
+                a.appendChild(p);
+                li.appendChild(a);
 
-		// We'll list the kdbx files inside this element
-		var container = document.getElementById('kdbx-files');
-		container.appendChild(li);
-		// Each entry has this event handler.
-		a.addEventListener ('click', kdbxSelected);
-	}
-	this.done = false;
+                // We'll list the kdbx files inside this element
+                var container = document.getElementById('kdbx-files');
+                container.appendChild(li);
+                // Each entry has this event handler.
+                a.addEventListener ('click', kdbxSelected);
+            }
+            this.continue();
+        }
+    };
+    
 
-	if (!this.done) {
-		this.continue();
-	}
+    files.onerror = function() {
+        console.log(this.error);
+    };
 };
 
-files.onerror = function() {
-	console.log(this.error);
-};
 
 //file select
 document.querySelector('#btn-open-file').addEventListener ('click', function () {
+    console.debug("Click");
+    reloadFiles();
 	document.querySelector('#select-file').className = 'current';
 	document.querySelector('[data-position="current"]').className = 'left';
 });
